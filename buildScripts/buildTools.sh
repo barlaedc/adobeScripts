@@ -40,6 +40,10 @@ function logError ()
 HELP=false
 CLEANUP=true
 COMPILEJSXFILE="compile.jsx"
+INSTALL=false
+##todo - get user name
+USERNAME=$(whoami)
+INDESIGN2018INSTALLPATH="/Users/$USERNAME/Library/Preferences/Adobe InDesign/Version 13.0/en_GB/Scripts/Scripts Panel/"
 
 ## DEFAULT VARiABLES
 CURDIR="$(pwd)"
@@ -71,15 +75,17 @@ function helpInfo ()
 	echo "    WARNING - show warnings and errors"
 	echo "    ERROR - show errors only"
 	echo "h - BOOLEAN - shows this message"
+	echo "i - BOOLEAN - installs scripts to the correct location, only InDesign CC 2018 at the moment"
 	echo "T - STRING - The toolname to build"
 	echo ""
 }
 
-while getopts cD:hT: opt
+while getopts cD:hiT: opt
 do
 	case $opt in 
 		c) CLEANUP=false;;
 		D) _DEBUG=$OPTARG;;
+		i) INSTALL=true;;
 		h) HELP=true;;
 		T) TOOLNAME="$OPTARG";;
 	esac
@@ -158,5 +164,9 @@ for JSXFILE in "$JSXFILES"; do
 	## check required files have been created
 	if [ ! -f "$JSXBINPATH" ] ; then
 		echo "ERROR - compiled script not created."
+	elif [ "$INSTALL" == true ] ; then
+		logLine "installing to $INDESIGN2018INSTALLPATH"
+		logLine "calling - cp $JSXBINPATH $INDESIGN2018INSTALLPATH$JSXBINFILEPATH"
+		cp "$JSXBINPATH" "$INDESIGN2018INSTALLPATH$JSXBINFILEPATH"
 	fi
 done

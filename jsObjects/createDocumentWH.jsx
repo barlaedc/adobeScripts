@@ -32,6 +32,15 @@ CreateDocument.prototype.setNumPages = function ( intNumPages)
     }
 }
 
+CreateDocument.prototype.getNumPages = function ()
+{
+	if ( this.numPages === null)
+	{
+		return 0;
+	}
+	return this.numPages;
+}
+
 CreateDocument.prototype.setLayerNames = function ( strLayerNames)
 {
     if ( strLayerNames.indexOf(";") !== -1)
@@ -50,6 +59,11 @@ CreateDocument.prototype.setAddTextFrames = function ( boolTextFrames)
     {
         this.detailsTextFrames = boolTextFrames;
     }
+}
+
+CreateDocument.prototype.getAddTextFrames = function ()
+{
+	return this.detailsTextFrames;
 }
 
 CreateDocument.prototype.run = function ()
